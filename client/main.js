@@ -4,6 +4,7 @@
 //Importa funcion declarada dentro de Utils
 //Importa variable inicializada colocando comas en la declaracion
 
+// Valor por defecto fuera de las llaves, funciones y variables dentro de llaves
 /*import valor, {saludaUsuario, nombre} from './../imports/utils'
 import add from './../imports/add'
 
@@ -20,15 +21,15 @@ import {Meteor} from 'meteor/meteor'
 const jugadores = [{
     _id: '1',
     nombre: 'Jose',
-    score: 99
+    puntos: 99
 },{
     _id: '2',
     nombre: 'Alberto',
-    score: -1
+    puntos: -1
 }, {
     _id: '3',
     nombre: 'Roberto',
-    score: 10
+    puntos: 10
 }]
 
 const mostrarJugadores = function (listaDeJugadores) {
@@ -39,7 +40,7 @@ const mostrarJugadores = function (listaDeJugadores) {
         //return numero.val - 1;
         // NOTA IMPORTANTE: Para mapear y mostrar cada parrafo nuevo, se debe agregar la propiedad "KEY", el cual tiene que ser un 
         // identificador unico por cada elemento a mostrar (En este caso, _id es el identificador unico).
-        return <p key = {jugador._id}>Jugador {jugador.nombre} tiene un score de: {jugador.score}</p>
+        return <p key = {jugador._id}>Jugador {jugador.nombre} tiene un score de: {jugador.puntos}</p>
     })
 
     //console.log(nuevosNumeros)
