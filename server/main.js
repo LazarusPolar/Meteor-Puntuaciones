@@ -9,7 +9,7 @@ import {Jugadores} from '.././imports/api/jugadores'
 
 // Funcion ejecutada al iniciar el proceso del servidor
 Meteor.startup(function () {
-    Jugadores.insert({
+    /*Jugadores.insert({
         nombre: 'Alemania2', 
         puntos: 30
     })
@@ -17,9 +17,9 @@ Meteor.startup(function () {
     Jugadores.insert({
         nombre: 'Rugal', 
         puntos: 30
-    })
+    })*/
     // Retorna un puntero, por eso se le agrega "fetch()"
-    console.log(Jugadores.find().fetch())
+    //console.log(Jugadores.find().fetch())
 })
 
 console.log('Log from /server/main.js')

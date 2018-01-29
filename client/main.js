@@ -17,8 +17,22 @@ console.log(valor)*/
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Meteor} from 'meteor/meteor'
+import {Jugadores} from './../imports/api/jugadores'
 
-const jugadores = [{
+// La solucion para la carga de datos de MongoDB en lugar de realizar un Timeout y esperar ese tiempo
+// para el re-renderizado de datos
+import {Tracker} from 'meteor/tracker'
+
+
+// Lo que no se debe hacer del lado del cliente para un minimongo
+/* 
+setTimeout(function() {
+    console.log("Lista de jugadores: ", Jugadores.find().fetch())
+}, 1000)*/
+
+
+// Antigua manera de settear datos sin MongoDB (Hardcoded)
+/*const jugadores = [{
     _id: '1',
     nombre: 'Jose',
     puntos: 99
@@ -30,13 +44,13 @@ const jugadores = [{
     _id: '3',
     nombre: 'Roberto',
     puntos: 10
-}]
+}]*/
 
 const mostrarJugadores = function (listaDeJugadores) {
     //let numeros = [{val:1}, {val:2}, {val:3}, {val:101}]
 
     // Map: Se mapea el objeto y se decide que valor del objeto regresar
-    return jugadores.map(function(jugador) {
+    return listaDeJugadores.map(function(jugador) {
         //return numero.val - 1;
         // NOTA IMPORTANTE: Para mapear y mostrar cada parrafo nuevo, se debe agregar la propiedad "KEY", el cual tiene que ser un 
         // identificador unico por cada elemento a mostrar (En este caso, _id es el identificador unico).
@@ -49,13 +63,16 @@ const mostrarJugadores = function (listaDeJugadores) {
 
 Meteor.startup(function(){
 
+    Tracker.autorun(function(){
+        //Jugadores.find().fetch()
+    let jugadores = Jugadores.find().fetch();
     let titulo = "Puntuaciones"
     let nombre = 'Jose';
 
-    // JSX es HTML embebido dentro de HTML para entregarlo a la vista
-    // Si se intente colocar otro tag dentro de la variable, esta ultima no se visualizara
-    // La mejor solucion es usar un <div>
-    // Para indentar el codigo se usan () para encerrar la expresion JSX y tener una mejor lectura del codigo
+    /* JSX es HTML embebido dentro de HTML para entregarlo a la vista
+    * Si se intente colocar otro tag dentro de la variable, esta ultima no se visualizara
+    * La mejor solucion es usar un <div>
+    * Para indentar el codigo se usan () para encerrar la expresion JSX y tener una mejor lectura del codigo */
    let jsx = 
    (<div>
        <h1>{titulo}</h1>
@@ -63,7 +80,18 @@ Meteor.startup(function(){
        <p>Nuevo parrafo</p>
        {mostrarJugadores(jugadores)}
     </div>)
-   // ReactDOM renderiza el JSX (Primer parametro) para convertirlo en HTML y mostrarlo en el contenedor (Segundo parametro)
-   ReactDOM.render(jsx, document.getElementById('app'))
+
+    // ReactDOM renderiza el JSX (Primer parametro) para convertirlo en HTML y mostrarlo en el contenedor (Segundo parametro)
+    ReactDOM.render(jsx, document.getElementById('app'))
+    })
+
+    /** Inserta nuevo jugador cada que se guarde de nueva cuenta este documento
+    * Esto se actualiza de inmediato de Minimongo (Cliente) a MongoDB (Server) por 
+    * el protocolo DDP. */
+      Jugadores.insert({
+          nombre: 'Anita', 
+          puntos: 38
+      });
+
 });
 
